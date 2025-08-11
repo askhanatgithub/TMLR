@@ -376,8 +376,9 @@
 		\text{sigmoid}\left(\frac{\beta (\log \mathbf{u}_i - \log (1 - \mathbf{u}_i) + \log \boldsymbol{\alpha}_i)}{\beta}\right),
 	\end{equation}
 	%
-	where parameters $\boldsymbol{\alpha}_i$ and $\beta$ are location and temperature parameters respectively. As $\beta \to 0$, the approximation converges to the original Bernoulli distribution. $\mathbf{m}$ is obtained by stretching the distribution with $\tilde { \mathbf{s}}_i = \mathbf{s}_i (\zeta - \gamma) + \gamma$ using $\gamma < 0$ and $\zeta > 1$ and applying the hard sigmoid $\mathbf{m}_i = \max \left( 1, \min \left( 0, \tilde{ \mathbf{s}}_i \right) \right)$. The new sparsity objective is the cumulative distribution function of the learned Binary Concrete distribution, 
+	where parameters $\boldsymbol{\alpha}_i$ and $\beta$ are location and temperature parameters respectively. As $\beta \to 0$, the approximation converges to the original Bernoulli distribution. $\mathbf{m}$ is obtained by stretching the distribution with $\tilde { \mathbf{s}}_i = \mathbf{s}_i (\zeta - \gamma) + \gamma$ using $\gamma < 0$ and $\zeta > 1$. The new sparsity objective is the cumulative distribution function of the learned Binary Concrete distribution, 
 	%
+	% and applying the hard sigmoid $\mathbf{m}_i = \max \left( 1, \min \left( 0, \tilde{ \mathbf{s}}_i \right) \right)$%
 	\begin{equation}
 		\begin{aligned}
 			%\sum_{j=1}^{|\theta|} (1 - Q(s_j = 0 \mid \alpha, \beta)) =  & \\ 
@@ -444,7 +445,19 @@
 	
 	% It is clear that XXX.
 	
-	
+
+\subsection{Mutual Exclusivity Regularization}
+
+To encourage mutual exclusivity across the learned masks, we introduce a softmax-based exclusivity loss that penalizes the sharing of the same latent dimension among different masks. Let $\mathcal{M} \in \mathbb{R}^{4 \times d}$ denote the stacked mask logits for the four masks, where $d$ is the latent dimensionality. We compute a temperature-controlled softmax across the rows of $\mathcal{M}$ to obtain the normalized mask assignments:
+\begin{equation}
+	\mathbf{S} = \text{softmax}\left(\frac{\mathcal{M}}{\kappa}\right),
+\end{equation}
+where $\kappa > 0$ is the temperature parameter controlling the sharpness of the assignments. The exclusivity loss is then defined as the mean column-wise entropy of $\mathbf{S}$:
+\begin{equation}
+	\mathcal{L}_{\text{excl}} = -\frac{1}{d} \sum_{j=1}^d \sum_{i=1}^4 S_{i,j} \log S_{i,j}.
+\end{equation}
+Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be assigned predominantly to a single mask, thereby reducing redundancy and promoting specialization across the latent representations.
+
 	
 	\subsection{Implementation Details}
 	\label{sec:details}
@@ -453,7 +466,7 @@
 	The overall loss function of our approach consists of the $L_0$ sparsity objective on masks $\mathbf{m}_{\Gamma}$,  $\mathbf{m}_{\Delta}$, $\mathbf{m}_{\Upsilon}$ and $\mathbf{m}_{\Omega}$ from Section \ref{sec:l0}, the modified ELBO with the outcome prediction constraint from Section \ref{sec:geco}, and a discrepancy loss on the latent space between the treatment groups $\mathcal{L}_\mathit{disc}$, 
 	%
 	\begin{equation}
-		\mathcal{L}_\mathit{GLOVE-ITE}=\mathcal{L}_{\text{ELBO}} + \|\mathbf{m}_{\Gamma, \Delta, \Upsilon,\Omega}\|_0 + \mathcal{L}_\mathit{disc}
+		\mathcal{L}_\mathit{GLOVE-ITE}=\mathcal{L}_{\text{ELBO}} + \|\mathbf{m}_{\Gamma, \Delta, \Upsilon,\Omega}\|_0 + \mathcal{L}_{\mathit{excl}}+\mathcal{L}_\mathit{disc}
 		\label{eq:overall}
 		.
 	\end{equation}
