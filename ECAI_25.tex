@@ -739,9 +739,9 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 		\centering
 		%\captionsetup{justification=centering}
 		
-		\includegraphics[width=0.33\textwidth]{Images/bce_increase.png}
-		\includegraphics[width=0.33\textwidth]{Images/mse_increase.png}
-		\includegraphics[width=0.33\textwidth]{Images/pehe_increase.png}
+		\includegraphics[width=0.33\textwidth]{Images/bce_increase_new.png}
+		\includegraphics[width=0.33\textwidth]{Images/mse_increase_new.png}
+		\includegraphics[width=0.33\textwidth]{Images/pehe_increase_new.png}
 		
 		
 		\caption{Feature permutation analysis demonstrating the inference and disentanglement of latent across BCE, MSE, and PEHE tasks.}
@@ -770,9 +770,10 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 		\centering
 		%\captionsetup{justification=centering}
 		
-		\includegraphics[width=0.5\textwidth]{Images/orthogonal.png}
+		\includegraphics[width=0.5\textwidth]{Images/orthogonal_new.png}
 		
-		\caption{Four learned masks showing active (green) and inactive (white) latent dimensions. Each mask activates distinct subsets of latent dimensions with minimal overlap—only one dimension is shared across all masks (visible as green in a single column)—indicating that the masks are learning largely independently. The observed overlap is just 2.5\%, highlighting the natural disentanglement effect of integrating sparsity-inducing masks within the VAE framework.}
+		\caption{	
+			Four learned masks showing active (green) and inactive (white) latent dimensions. The exclusivity loss $\mathcal{L}_{\mathit{excl}}$ ensures no overlap, preventing information leakage and allowing each mask to learn its relevant latent subspace.}
 		
 		.
 		%\todo[author=jsk]{I do not know if this result id good or bad. Should we not have zero overlap in a correct causal model? Is there any way to show how much overlap there would be if we did not have masks. Do we make clear enough that minimal overlap is not a training objective but a side-effect?}
@@ -781,6 +782,9 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 		\label{fig:ortho}
 		
 	\end{figure}
+
+
+	
 	
 	\begin{figure}[h]
 		\centering
@@ -796,7 +800,10 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 		
 	\end{figure}
 	
-	Similarly, it confirms the successful learning of $\Delta$ and $\Upsilon$ factors, as evidenced by their impact on the MSE when permuted. Finally, it illustrates that GLOVE-ITE effectively disentangles and infers $\Omega$, as permuting irrelevant features does not affect the PEHE, while permuting relevant features leads to a significant increase. This analysis underscores the robustness of GLOVE-ITE in inferring and disentangling the critical latent factors. \citet{CEVAE,lowe2022amortized} show that when latent factors are correctly inferred, causal effects can be identified and the reliance on the ignorability (unconfoundedness) assumption is reduced \citep{vowels2021targeted}.
+	Similarly, it confirms the successful learning of $\Delta$ and $\Upsilon$ factors, as evidenced by their impact on the MSE when permuted. Finally, it illustrates that GLOVE-ITE effectively disentangles and infers $\Omega$, as permuting irrelevant features does not affect the PEHE, while permuting relevant features leads to a significant increase. This analysis underscores the robustness of GLOVE-ITE in inferring and disentangling the critical latent factors. \citet{CEVAE,lowe2022amortized} show that when latent factors are correctly inferred, causal effects can be identified and the reliance on the ignorability (unconfoundedness) assumption is reduced \citep{vowels2021targeted}. 
+	
+	Furthermore, Figure~\ref{fig:ortho} illustrates the learned masks for the four latent subspaces, where green denotes active and white denotes inactive dimensions. The exclusivity loss $\mathcal{L}_{\mathit{excl}}$ enforces disjoint activations, ensuring that no information is shared between masks. As a result, each mask learns only the latent dimensions relevant to its corresponding component, leading to independent and specialized representations that reduce redundancy and improve interpretability.
+	
 	
 	
 	%\textbf{Identification and disentanglement:} Figure \ref{fig:permutation} highlights the identification of latent factors using the permutation feature importance theory \cite{Fisher,Khan2024OnTE}. Specifically, it demonstrates that only $\Gamma$ and $\Delta$ features contribute to an increase in the BCE loss, validating our method's ability to accurately identify these factors within the data. Similarly, it confirms the successful identification of $\Delta$ and $\Upsilon$ factors, as evidenced by their impact on the MSE when permuted. Finally, it illustrates that GLOVE-ITE effectively disentangles and identifies $\Omega$, as permuting irrelevant features does not affect the PEHE, while permuting relevant features leads to a significant increase. This comprehensive analysis underscores the robustness of GLOVE-ITE in identifying and disentangling the critical latent factors.%
