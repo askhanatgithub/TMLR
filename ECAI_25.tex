@@ -607,7 +607,7 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 			TEDVAE    	& 5          	& 30 & 30      & 30           & NA   & 90          	& 0.22 (0.012)           \\
 			TVAE   		& 5      		& 30 & 30      & 30           & 30   & 120          & 0.23 (0.003)        \\
 			DRI-ITE     & 5       		& 30 & 30      & 30           & 30   & 120          & 0.26 (0.024)           \\
-			GLOVE-ITE (Ours)   	& 5          	& 9 & 11      & 7           & 5   & 32      & \textbf{0.17 (0.007)}          \\
+			GLOVE-ITE (Ours)   	& 5          	& 7 & 8      & 7           & 7   & 29      & \textbf{0.15 (0.005)}          \\
 			
 			\bottomrule
 			DR-CFR		&10	& 30 & 30      & 30           & NA   & 90      & 0.27 (0.016)		\\
@@ -615,7 +615,7 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 			TEDVAE    	& 10         	& 30 & 30      & 30           & NA   & 90          & 0.50 (0.054)           \\
 			TVAE   		& 10       		& 30 & 30      & 30           & 30   & 120          & 0.28 (0.004)        \\
 			DRI-ITE     & 10      		& 30 & 30      & 30           & 30   & 120          & 0.27 (0.027)           \\
-			GLOVE-ITE (Ours)    	& 10           	& 8 & 11      & 7           &3   & 29          & \textbf{0.18 (0.004)}          \\
+			GLOVE-ITE (Ours)    	& 10           	& 7 & 7      & 7           &7   & 28          & \textbf{0.16 (0.003)}          \\
 			
 			\bottomrule
 			DR-CFR		&15	& 30 & 30      & 30           & NA   & 90      &0.28 (0.019)	\\
@@ -623,7 +623,7 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 			TEDVAE    	& 15        	& 30 & 30      & 30           & NA   & 90          & 0.49 (0.010)           \\
 			TVAE   		& 15      		& 30 & 30      & 30           & 30   & 120          & 0.34 (0.003)        \\
 			DRI-ITE     & 15       		& 30 & 30      & 30           & 30   & 120          & 0.28 (0.021)           \\
-			GLOVE-ITE (Ours)    	& 15           	& 8 & 10      & 6           & 2   & 26          & \textbf{0.17 (0.004)}          \\
+			GLOVE-ITE (Ours)    	& 15           	& 8 & 8      & 8           & 7   & 31          & \textbf{0.17 (0.005)}          \\
 			
 			\bottomrule
 		\end{tabular}
@@ -658,9 +658,8 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 	
 	
 	\subsection{Results}
-	
-	The Table \ref{tab:IHDP} presents a comprehensive evaluation of treatment effect estimation methods on the IHDP dataset, highlighting the superior performance of our approach across varying dimensions of irrelevant variables ($\Omega$). GLOVE-ITE consistently achieves the lowest Precision in Estimation of Heterogeneous Effect (PEHE) values: 0.75(0.39), 0.75(0.38), and 0.78(0.41) for $\Omega$=5,10,15 respectively; outperforming strong baselines such as TEDVAE, TVAE, and DRI-ITE. Notably, GLOVE-ITE achieves this accuracy with significantly reduced total dimensionality (e.g., 39 vs. 140 for $\Omega$=5), showcasing its ability to narrow down the VAE bottleneck and discarding unnecessary latent dimensions. Furthermore, GLOVE-ITE demonstrates remarkable robustness to increasing irrelevant dimensions, exhibiting minimal degradation in PEHE compared to other methods. In contrast, baselines either rely on higher dimensional representations or exhibit inferior accuracy, underscoring the efficiency and effectiveness of our approach in solving complex treatment effect estimation tasks.
-	
+		
+	The Table~\ref{tab:IHDP} presents a comprehensive evaluation of treatment effect estimation methods on the IHDP dataset, highlighting the superior performance of our approach across varying dimensions of irrelevant variables ($\Omega$). GLOVE-ITE consistently achieves the lowest Precision in Estimation of Heterogeneous Effect (PEHE) values: 0.70~(0.07), 0.74~(0.08), and 0.75~(0.08) for $\Omega=5,10,15$, respectively---outperforming strong baselines such as DR-CFR, TEDVAE, TVAE, and DRI-ITE. Notably, GLOVE-ITE achieves this accuracy with significantly reduced total dimensionality (e.g., 32 vs.\ 140 for $\Omega=5$), showcasing its ability to narrow down the VAE bottleneck and discard unnecessary latent dimensions. Furthermore, GLOVE-ITE demonstrates remarkable robustness to increasing irrelevant dimensions, exhibiting minimal degradation in PEHE compared to other methods. In contrast, baselines either rely on higher dimensional representations or exhibit inferior accuracy, underscoring the efficiency and effectiveness of our approach in solving complex treatment effect estimation tasks.
 	
 	
 	\begin{comment}
@@ -681,8 +680,9 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 		content...
 	\end{comment}
 	
-	Table \ref{tab:synthetic} highlights the effectiveness of various methods on a synthetic dataset (8×8×8×$\Omega$), focusing on the ability to estimate treatment effects while identifying and leveraging the true underlying data dimensions. GLOVE-ITE demonstrates it's ability to learn optimal latent representation, achieving the lowest PEHE values: 0.17(0.00), 0.18(0.00), and 0.17(0.027) for $\Omega$=5,10,15, respectively. Importantly, it uses only 26–32 latent dimensions, closely aligning with the actual data regardless of $\Omega$, in contrast to baselines like TEDVAE, TVAE, and DRI-ITE, which rely on significantly larger total dimensionalities (90–120). This dimension efficiency underscores our method’s ability to disentangle relevant features from irrelevant variables while maintaining robust performance. As $\Omega$ increases, GLOVE-ITE effectively adjusts to the true dimensions of the data, showing minimal degradation in PEHE compared to other methods. These results demonstrate the capability of our approach to optimize the use of latent dimensions in variational autoencoders, achieving state-of-the-art accuracy with an efficient and interpretable representation. 
+
 	
+	Table~\ref{tab:synthetic} highlights the effectiveness of various methods on a synthetic dataset (8$\times$8$\times$8$\times\Omega$), focusing on the ability to estimate treatment effects while identifying and leveraging the true underlying data dimensions. GLOVE-ITE demonstrates its ability to learn optimal latent representations, achieving the lowest PEHE values: 0.15~(0.005), 0.16~(0.003), and 0.17~(0.005) for $\Omega=5,10,15$, respectively. Importantly, it uses only 28--31 latent dimensions, closely aligning with the actual data regardless of $\Omega$, in contrast to baselines methods, which rely on significantly larger total dimensionalities (90--120). This dimensional efficiency underscores our method’s ability to disentangle relevant features from irrelevant variables while maintaining robust performance. As $\Omega$ increases, GLOVE-ITE effectively adapts to the true dimensions of the data, showing minimal degradation in PEHE compared to other methods. These results demonstrate the capability of our approach to optimize the use of latent dimensions in variational autoencoders, achieving state-of-the-art accuracy with an efficient and interpretable representation.
 	
 	
 	
@@ -700,7 +700,7 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 			%$\mathcal{L}_{\text{ELBO}} + \|\mathbf{m}_{\Gamma, \Delta, \Upsilon,\Omega}\|_0 + \mathcal{L}_{disc}$ (without constraint)     & 1.12(0.60)   	          \\
 			$\mathcal{L}_{\text{ELBO}} + \mathcal{L}_{disc}$ 		& 0.81(0.39)    	       \\
 			$\mathcal{L}_{\text{ELBO}} + \|\mathbf{m}_{\Gamma, \Delta, \Upsilon,\Omega}\|_0$   	& 0.77(0.40)           \\
-			$\mathcal{L}_{\text{ELBO}} + \|\mathbf{m}_{\Gamma, \Delta, \Upsilon,\Omega}\|_0 + \mathcal{L}_{disc}$     	& \textbf{0.75(0.39) }               \\
+			$\mathcal{L}_{\text{ELBO}} + \|\mathbf{m}_{\Gamma, \Delta, \Upsilon,\Omega}\|_0 + \mathcal{L}_{disc}$     	& 0.75(0.39)                \\
 			$\mathcal{L}_{\text{ELBO}} + \|\mathbf{m}_{\Gamma, \Delta, \Upsilon,\Omega}\|_0 + \mathcal{L}_{disc}+\mathcal{L}_{\mathit{excl}}$    	& \textbf{0.70(0.07) }               \\
 			
 			\bottomrule
@@ -710,7 +710,7 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 		%\todo{The notation here is wrong.}
 		
 	\end{table}
-	\addtocounter{footnote}{+1} %
+	%\addtocounter{footnote}{+1} %
 	
 	
 	\begin{table}[h]
@@ -754,11 +754,8 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 	
 	Figure \ref{fig:learning_curves} illustrates the learning dynamics of our model, focusing on three key quantities: (1) Mean Squared Error Constrained (MSEC), (2) the Lagrange multiplier ($\lambda$), and (3) the number of active latent dimensions during training. To ensure stability and a reliable estimate, we show the average of the last five active dimension values after each epoch instead of the final value alone. Early in training, the $L_0$ regularizer aggressively reduces the number of active latent dimensions, causing an initial rise in MSEC around the 200$^{th}$ epoch. Simultaneously, $\lambda$ increases steadily to enforce the MSE constraint. As training progresses, the MSEC gradually decreases toward the specified tolerance ($\tau$), while the number of active latent dimensions increases to balance dimensional efficiency with predictive accuracy. By the end of training, the MSEC stabilizes near $\tau$, the number of active dimensions converges, and $\lambda$ reaches a stable value, indicating successful convergence. Notably, models with fixed $\lambda$ fail to achieve comparable results, struggling to balance the trade-off between the two objectives effectively. 
 	
-	
-	
-	
-	\textbf{Ablation study:} Table \ref{tab:ablation} summarizes an ablation study evaluating the impact of different components of the loss function on PEHE performance using the IHDP dataset with five irrelevant variables. Combining the ELBO, masks ($L_0$ regularization) and the dicrepancy loss without enforcing the MSE constraint performs worse, with a PEHE of 1.12(0.60), indicating the necessity of constraint enforcement. Adding the discrepancy loss ($\mathcal{L}_{disc}$) alongside ELBO but without masks ( $L_0$ regularization) results in a lower PEHE of 0.81(0.39). Further, removing only the discrepancy loss achieves PEHE of 0.77 (0.40). The complete loss function, integrating ELBO, masks ($L_0$ regularization), discrepancy loss, and the MSE constraint, achieves the best PEHE of 0.75(0.39), demonstrating the importance of a balanced combination of these components for optimal performance.
-	
+
+	Table~\ref{tab:ablation} presents the results of an ablation study on the loss function, evaluated on the IHDP dataset with five irrelevant variables. Starting with the baseline objective $\mathcal{L}_{\text{ELBO}} + \mathcal{L}_{disc}$, we observe a PEHE of 0.81~(0.39). Introducing the sparsity-inducing term $\|\mathbf{m}_{\Gamma, \Delta, \Upsilon, \Omega}\|_0$ reduces the error to 0.77~(0.40), highlighting the benefit of explicit dimension selection. Combining both the sparsity term and the discrepancy loss further improves performance to 0.75~(0.39). Finally, adding the exclusivity loss $\mathcal{L}_{\mathit{excl}}$ yields the best result with a PEHE of {0.70~(0.07)}, demonstrating that encouraging non-overlapping activation across masks enhances the model’s ability to isolate relevant latent dimensions and improves treatment effect estimation accuracy.
 	
 	
 	\textbf{Compression analysis:} Table \ref{tab:compression} presents a compression analysis of the proposed method on synthetic data with an 8×8×8×5 dimensional structure, evaluated across varying initial dimensionality settings. Despite starting with different initial dimensions (ranging from 60 to 84), the method consistently compresses the data to a compact latent representation, utilizing only 29–31 total dimensions. This highlights the model's ability to adaptively allocate dimensions among $\Gamma,\Delta$,$\Upsilon$ and $\Omega$ encoders, with minor variations depending on the initial input size. For instance, with initial dimensions of 76 or 84, the method converges to 29 latent dimensions, while for 60 and 68, it stabilizes at 31 and 28 dimensions. These results emphasize the model's robustness in achieving efficient compression irrespective of the initial input dimensionality, while preserving the underlying data structure.
@@ -799,7 +796,7 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 		
 	\end{figure}
 	
-	Similarly, it confirms the successful learning of $\Delta$ and $\Upsilon$ factors, as evidenced by their impact on the MSE when permuted. Finally, it illustrates that GLOVE-ITE effectively disentangles and infers $\Omega$, as permuting irrelevant features does not affect the PEHE, while permuting relevant features leads to a significant increase. This comprehensive analysis underscores the robustness of GLOVE-ITE in inferring and disentangling the critical latent factors. \citet{CEVAE,lowe2022amortized} show that when latent factors are correctly inferred, causal effects can be identified and the reliance on the ignorability (unconfoundedness) assumption is reduced \citep{vowels2021targeted}.
+	Similarly, it confirms the successful learning of $\Delta$ and $\Upsilon$ factors, as evidenced by their impact on the MSE when permuted. Finally, it illustrates that GLOVE-ITE effectively disentangles and infers $\Omega$, as permuting irrelevant features does not affect the PEHE, while permuting relevant features leads to a significant increase. This analysis underscores the robustness of GLOVE-ITE in inferring and disentangling the critical latent factors. \citet{CEVAE,lowe2022amortized} show that when latent factors are correctly inferred, causal effects can be identified and the reliance on the ignorability (unconfoundedness) assumption is reduced \citep{vowels2021targeted}.
 	
 	
 	%\textbf{Identification and disentanglement:} Figure \ref{fig:permutation} highlights the identification of latent factors using the permutation feature importance theory \cite{Fisher,Khan2024OnTE}. Specifically, it demonstrates that only $\Gamma$ and $\Delta$ features contribute to an increase in the BCE loss, validating our method's ability to accurately identify these factors within the data. Similarly, it confirms the successful identification of $\Delta$ and $\Upsilon$ factors, as evidenced by their impact on the MSE when permuted. Finally, it illustrates that GLOVE-ITE effectively disentangles and identifies $\Omega$, as permuting irrelevant features does not affect the PEHE, while permuting relevant features leads to a significant increase. This comprehensive analysis underscores the robustness of GLOVE-ITE in identifying and disentangling the critical latent factors.%
