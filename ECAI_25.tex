@@ -771,9 +771,12 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 		%\captionsetup{justification=centering}
 		
 		\includegraphics[width=0.5\textwidth]{Images/orthogonal_new_2.png}
-		
-		\caption{	
-			Four learned masks showing active (green) and inactive (white) latent dimensions. The exclusivity loss $\mathcal{L}_{\mathit{excl}}$ ensures no overlap, preventing information leakage and allowing each mask to learn its relevant latent subspace.}
+		\caption{
+			Four learned masks showing active latent dimensions in distinct colors 
+			(red: $\Gamma$, green: $\Delta$, blue: $\Upsilon$, orange: $\Omega$) and inactive ones in white. 
+			Any overlap across masks is marked in black. The exclusivity loss $\mathcal{L}_{\mathit{excl}}$ enforces independence, 
+			preventing information leakage and ensuring each mask captures its own relevant latent subspace.
+		}
 		
 		.
 		%\todo[author=jsk]{I do not know if this result id good or bad. Should we not have zero overlap in a correct causal model? Is there any way to show how much overlap there would be if we did not have masks. Do we make clear enough that minimal overlap is not a training objective but a side-effect?}
@@ -802,7 +805,13 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 	
 	Similarly, it confirms the successful learning of $\Delta$ and $\Upsilon$ factors, as evidenced by their impact on the MSE when permuted. Finally, it illustrates that GLOVE-ITE effectively disentangles and infers $\Omega$, as permuting irrelevant features does not affect the PEHE, while permuting relevant features leads to a significant increase. This analysis underscores the robustness of GLOVE-ITE in inferring and disentangling the critical latent factors. \citet{CEVAE,lowe2022amortized} show that when latent factors are correctly inferred, causal effects can be identified and the reliance on the ignorability (unconfoundedness) assumption is reduced \citep{vowels2021targeted}. 
 	
-	Furthermore, Figure~\ref{fig:ortho} illustrates the learned masks for the four latent subspaces, where green denotes active and white denotes inactive dimensions. The exclusivity loss $\mathcal{L}_{\mathit{excl}}$ enforces disjoint activations, ensuring that no information is shared between masks. As a result, each mask learns only the latent dimensions relevant to its corresponding component, leading to independent and specialized representations that reduce redundancy and improve interpretability.
+	Furthermore, Figure~\ref{fig:ortho} visualizes the learned masks across the four latent subspaces, 
+	with active dimensions shown in distinct colors (red for $\Gamma$, green for $\Delta$, blue for $\Upsilon$, and orange for $\Omega$), 
+	inactive dimensions in white, and overlaps (if any) highlighted in black. 
+	The exclusivity loss $\mathcal{L}_{\mathit{excl}}$ enforces disjoint activations, preventing information leakage across masks. 
+	Consequently, each mask captures only the latent dimensions relevant to its component, yielding independent and specialized representations 
+	that reduce redundancy and enhance interpretability.
+	
 	
 		\begin{figure*}[h]
 		\centering
