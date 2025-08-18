@@ -144,15 +144,43 @@
 	
 	%In this paper, we propose a novel VAE-based framework that simultaneously learns the latent space dimensionality for each latent factor instead of relying on a pre-defined or iteratively tuned values and estimates treatment effects.
 	
-	In this paper, we propose a novel VAE-based framework that jointly estimates treatment effects and automatically determines the dimensionality of the latent representation by inducing sparsity in the VAE bottleneck which eliminates the need for pre-defined or manually tuned bottleneck width. For this, we use a differentiable $L_0$ objective on the VAE bottleneck using a sparsity-inducing mask \citep{louizos2018learning}.
-	%
-	However, optimizing bottleneck sparsity without constraints as part of the joint objective is detrimental as shown in our results (Figure \ref{fig:learning_curves}). For this reason, we use Generalized ELBO with Constrained Optimization (GECO) \citep{JimenezRezende2018TamingV,Boom2020DynamicNO} which allows us to prioritize the prediction task over sparsity.
-	%
-	Additionally, to address the challenge of irrelevant variables in data, our method learns a dedicated mask that separates irrelevant factors into a distinct latent subspace, thereby enhancing robustness in treatment effect estimation.
-	To the best of our knowledge, no existing method combines $L_0$ regularization with GECO to optimize the VAE bottleneck for treatment effect estimation. 
+	\begin{comment}
+		In this paper, we propose a novel VAE-based framework that jointly estimates treatment effects and automatically determines the dimensionality of the latent representation by inducing sparsity in the VAE bottleneck which eliminates the need for pre-defined or manually tuned bottleneck width. For this, we use a differentiable $L_0$ objective on the VAE bottleneck using a sparsity-inducing mask \citep{louizos2018learning}.
+		%
+		However, optimizing bottleneck sparsity without constraints as part of the joint objective is detrimental as shown in our results (Figure \ref{fig:learning_curves}). For this reason, we use Generalized ELBO with Constrained Optimization (GECO) \citep{JimenezRezende2018TamingV,Boom2020DynamicNO} which allows us to prioritize the prediction task over sparsity.
+		%
+		Additionally, to address the challenge of irrelevant variables in data, our method learns a dedicated mask that separates irrelevant factors into a distinct latent subspace, thereby enhancing robustness in treatment effect estimation.
+		To the best of our knowledge, no existing method combines $L_0$ regularization with GECO to optimize the VAE bottleneck for treatment effect estimation. 
+		
+		Our approach demonstrates superior performance compared to state-of-the-art VAE-based methods on the Infant Health and Development Program (IHDP) dataset as well as a challenging synthetic dataset \citep{Gunn,Hill,Khan2024OnTE}. We further provide valuable qualitative insights into our framework, enhancing its practicality and stability for real-world applications. 
+		%\todo[author=jsk]{Reference for the dataset}
+		content...
+	\end{comment}
 	
-	Our approach demonstrates superior performance compared to state-of-the-art VAE-based methods on the Infant Health and Development Program (IHDP) dataset as well as a challenging synthetic dataset \citep{Gunn,Hill,Khan2024OnTE}. We further provide valuable qualitative insights into our framework, enhancing its practicality and stability for real-world applications. 
-	%\todo[author=jsk]{Reference for the dataset}
+	
+
+	In this paper, we propose a novel VAE-based framework that jointly estimates treatment effects and 
+	automatically determines the dimensionality of the latent representation by inducing sparsity in the 
+	VAE bottleneck, eliminating the need for pre-defined or manually tuned bottleneck width. For this, we 
+	use a differentiable $L_0$ objective on the VAE bottleneck with a sparsity-inducing mask 
+	\citep{louizos2018learning}. 
+	%
+	However, optimizing bottleneck sparsity without constraints as part of the joint objective is 
+	detrimental as shown in our results (Figure~\ref{fig:learning_curves}). For this reason, we use 
+	Generalized ELBO with Constrained Optimization (GECO) \citep{JimenezRezende2018TamingV,Boom2020DynamicNO}, 
+	which allows us to prioritize the prediction task over sparsity. 
+	%
+	Additionally, to address the challenge of irrelevant variables, our method learns a dedicated mask 
+	that separates irrelevant factors into a distinct latent subspace, while a mutual exclusivity objective 
+	enforces independence across subspaces, preventing information leakage and yielding disjoint, 
+	disentangled representations. To the best of our knowledge, no existing method combines $L_0$ 
+	regularization with GECO to optimize the VAE bottleneck for treatment effect estimation. 
+	%
+	Our approach demonstrates superior performance compared to state-of-the-art VAE-based methods on the 
+	Infant Health and Development Program (IHDP) dataset as well as a challenging synthetic dataset 
+	\citep{Gunn,Hill,Khan2024OnTE}. We further provide valuable qualitative insights into our framework, 
+	enhancing its practicality and stability for real-world applications.
+	
 	The core contributions of our work are as follows:
 	%
 	\begin{itemize}
@@ -844,8 +872,8 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 	Furthermore, Figure~\ref{fig:ortho} visualizes the learned masks across the four latent subspaces, 
 	with active dimensions shown in distinct colors (red for $\Gamma$, green for $\Delta$, blue for $\Upsilon$, and orange for $\Omega$), 
 	inactive dimensions in white, and overlaps (if any) highlighted in black. 
-	The exclusivity loss $\mathcal{L}_{\mathit{excl}}$ enforces disjoint activations, preventing information leakage across masks. 
-	Consequently, each mask captures only the latent dimensions relevant to its component, yielding independent and specialized representations 
+	The exclusivity objective $\mathcal{L}_{\mathit{excl}}$ enforces disjoint activations, preventing information leakage across masks. 
+	Consequently, each mask captures only the latent dimensions relevant to its component, yielding independent and disentangled representations 
 	that reduce redundancy and enhance interpretability.
 	
 	
