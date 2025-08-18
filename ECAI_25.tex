@@ -657,7 +657,32 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 	The same settings were applied with the following modifications: input and output dimensions for the encoder were $60$, batch size was $512$, maximum epochs were limited to $1500$, and MSE tolerance was set to $0.01$.
 	
 	
+	
+	\begin{figure*}
+		\centering
+		%\captionsetup{justification=centering}
+		
+		\includegraphics[width=0.45\textwidth]{Images/bce_increase_new_2.png}
+		\includegraphics[width=0.45\textwidth]{Images/mse_increase_new_2.png}
+		\includegraphics[width=0.45\textwidth]{Images/pehe_increase_new_2.png}
+		
+		
+		\caption{Feature permutation analysis demonstrating the inference and disentanglement of latent across BCE, MSE, and PEHE tasks.}
+		
+		\label{fig:permutation}
+		
+	\end{figure*}
+	
 	\subsection{Results}
+		
+	We are comparing our results with four state-of-the-art disentanglement approaches that, similar to our method, are VAE-based and explicitly address the challenge of irrelevant variables. This choice ensures both methodological relevance and a fair comparison in terms of latent representation compactness (i.e., bottleneck width). The baselines are:  
+	\begin{itemize}
+		\item Disentangled Representations for Counterfactual Regression: \textbf{DR-CFR} \citep{Negar}.
+		\item Treatment Effect with Disentangled Autoencoder: \textbf{TEDVAE} \citep{TEDEV}.
+		\item Targeted VAE: Variational and Targeted Learning for Causal Inference: \textbf{TVAE} \citep{vowels2021targeted}.
+		\item Disentangled Representation with Irrelevant Factor for Individual Treatment Effect Estimation: \textbf{DRI-ITE} \citep{Khan2024OnTE}.
+	\end{itemize}
+	
 		
 	The Table~\ref{tab:IHDP} presents a comprehensive evaluation of treatment effect estimation methods on the IHDP dataset, highlighting the superior performance of our approach across varying dimensions of irrelevant variables ($\Omega$). GLOVE-ITE consistently achieves the lowest Precision in Estimation of Heterogeneous Effect (PEHE) values: 0.70~(0.07), 0.74~(0.08), and 0.75~(0.08) for $\Omega=5,10,15$, respectively---outperforming strong baselines such as DR-CFR, TEDVAE, TVAE, and DRI-ITE. Notably, GLOVE-ITE achieves this accuracy with significantly reduced total dimensionality (e.g., 32 vs.\ 140 for $\Omega=5$), showcasing its ability to narrow down the VAE bottleneck and discard unnecessary latent dimensions. Furthermore, GLOVE-ITE demonstrates remarkable robustness to increasing irrelevant dimensions, exhibiting minimal degradation in PEHE compared to other methods. In contrast, baselines either rely on higher dimensional representations or exhibit inferior accuracy, underscoring the efficiency and effectiveness of our approach in solving complex treatment effect estimation tasks.
 	
@@ -735,27 +760,14 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 		\label{tab:compression}
 	\end{table}
 	
-	\begin{figure*}
-		\centering
-		%\captionsetup{justification=centering}
-		
-		\includegraphics[width=0.5\textwidth]{Images/bce_increase_new_2.png}
-		\includegraphics[width=0.5\textwidth]{Images/mse_increase_new_2.png}
-		\includegraphics[width=0.5\textwidth]{Images/pehe_increase_new_2.png}
-		
-		
-		\caption{Feature permutation analysis demonstrating the inference and disentanglement of latent across BCE, MSE, and PEHE tasks.}
-		
-		\label{fig:permutation}
-		
-	\end{figure*}
+	
 	
 	\subsection{Qualitative Evaluation of Model Performance}
 	
 	Figure \ref{fig:learning_curves} illustrates the learning dynamics of our model, focusing on three key quantities: (1) Mean Squared Error Constrained (MSEC), (2) the Lagrange multiplier ($\lambda$), and (3) the number of active latent dimensions during training. To ensure stability and a reliable estimate, we show the average of the last five active dimension values after each epoch instead of the final value alone. Early in training, the $L_0$ regularizer aggressively reduces the number of active latent dimensions, causing an initial rise in MSEC around the 200$^{th}$ epoch. Simultaneously, $\lambda$ increases steadily to enforce the MSE constraint. As training progresses, the MSEC gradually decreases toward the specified tolerance ($\tau$), while the number of active latent dimensions increases to balance dimensional efficiency with predictive accuracy. By the end of training, the MSEC stabilizes near $\tau$, the number of active dimensions converges, and $\lambda$ reaches a stable value, indicating successful convergence. Notably, models with fixed $\lambda$ fail to achieve comparable results, struggling to balance the trade-off between the two objectives effectively. 
 	
 
-	Table~\ref{tab:ablation} presents the results of an ablation study on the loss function, evaluated on the IHDP dataset with five irrelevant variables. Starting with the baseline objective $\mathcal{L}_{\text{ELBO}} + \mathcal{L}_{disc}$, we observe a PEHE of 0.81~(0.39). Introducing the sparsity-inducing term $\|\mathbf{m}_{\Gamma, \Delta, \Upsilon, \Omega}\|_0$ reduces the error to 0.77~(0.40), highlighting the benefit of explicit dimension selection. Combining both the sparsity term and the discrepancy loss further improves performance to 0.75~(0.39). Finally, adding the exclusivity loss $\mathcal{L}_{\mathit{excl}}$ yields the best result with a PEHE of {0.70~(0.07)}, demonstrating that encouraging non-overlapping activation across masks enhances the model’s ability to isolate relevant latent dimensions and improves treatment effect estimation accuracy.
+		\textbf{Ablation study:} Table~\ref{tab:ablation} presents the results of an ablation study on the loss function, evaluated on the IHDP dataset with five irrelevant variables. Starting with the baseline objective $\mathcal{L}_{\text{ELBO}} + \mathcal{L}_{disc}$, we observe a PEHE of 0.81~(0.39). Introducing the sparsity-inducing term $\|\mathbf{m}_{\Gamma, \Delta, \Upsilon, \Omega}\|_0$ reduces the error to 0.77~(0.40), highlighting the benefit of explicit dimension selection. Combining both the sparsity term and the discrepancy loss further improves performance to 0.75~(0.39). Finally, adding the exclusivity loss $\mathcal{L}_{\mathit{excl}}$ yields the best result with a PEHE of {0.70~(0.07)}, demonstrating that encouraging non-overlapping activation across masks enhances the model’s ability to isolate relevant latent dimensions and improves treatment effect estimation accuracy.
 	
 	
 	\textbf{Compression analysis:} Table \ref{tab:compression} presents a compression analysis of the proposed method on synthetic data with an 8×8×8×5 dimensional structure, evaluated across varying initial dimensionality settings. Despite starting with different initial dimensions (ranging from 60 to 84), the method consistently compresses the data to a compact latent representation, utilizing only 29–31 total dimensions. This highlights the model's ability to adaptively allocate dimensions among $\Gamma,\Delta$,$\Upsilon$ and $\Omega$ encoders, with minor variations depending on the initial input size. For instance, with initial dimensions of 76 or 84, the method converges to 29 latent dimensions, while for 60 and 68, it stabilizes at 31 and 28 dimensions. These results emphasize the model's robustness in achieving efficient compression irrespective of the initial input dimensionality, while preserving the underlying data structure.
@@ -787,6 +799,30 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 	\end{figure}
 
 
+		\begin{figure}[h]
+	\centering
+	%\captionsetup{justification=centering}
+	
+	\includegraphics[width=0.5\textwidth]{Images/MI.png}
+	
+	\caption{
+		Pairwise mutual information heat map between active dimensions of four learned masks (\(\Gamma, \Delta, \Upsilon, \Omega\)), 
+		showing near-zero off-diagonal values. This indicates complete independence across masks, with no information leakage 
+		and each mask capturing only its relevant factors.
+	}
+
+
+
+	
+	.
+	%\todo[author=jsk]{I do not know if this result id good or bad. Should we not have zero overlap in a correct causal model? Is there any way to show how much overlap there would be if we did not have masks. Do we make clear enough that minimal overlap is not a training objective but a side-effect?}
+	
+	
+	\label{fig:mi}
+	
+\end{figure}
+
+
 	
 	
 	\begin{figure}[h]
@@ -813,25 +849,7 @@ Minimizing $\mathcal{L}_{\text{excl}}$ encourages each latent dimension to be as
 	that reduce redundancy and enhance interpretability.
 	
 	
-		\begin{figure*}[h]
-		\centering
-		%\captionsetup{justification=centering}
-		
-		\includegraphics[width=0.7\textwidth]{Images/MI.png}
-		
-		\caption{
-			Group-level mutual information heat map between active dimensions of four learned masks (\(\Gamma, \Delta, \Upsilon, \Omega\)), 
-			showing near-zero off-diagonal values. This indicates complete independence across masks, with no information leakage 
-			and each mask capturing only its relevant factors.
-		}
-		
-		.
-		%\todo[author=jsk]{I do not know if this result id good or bad. Should we not have zero overlap in a correct causal model? Is there any way to show how much overlap there would be if we did not have masks. Do we make clear enough that minimal overlap is not a training objective but a side-effect?}
-		
-		
-		\label{fig:mi}
-		
-	\end{figure*}
+
 	
 	%\textbf{Identification and disentanglement:} Figure \ref{fig:permutation} highlights the identification of latent factors using the permutation feature importance theory \cite{Fisher,Khan2024OnTE}. Specifically, it demonstrates that only $\Gamma$ and $\Delta$ features contribute to an increase in the BCE loss, validating our method's ability to accurately identify these factors within the data. Similarly, it confirms the successful identification of $\Delta$ and $\Upsilon$ factors, as evidenced by their impact on the MSE when permuted. Finally, it illustrates that GLOVE-ITE effectively disentangles and identifies $\Omega$, as permuting irrelevant features does not affect the PEHE, while permuting relevant features leads to a significant increase. This comprehensive analysis underscores the robustness of GLOVE-ITE in identifying and disentangling the critical latent factors.%
 	
